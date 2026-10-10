@@ -93,24 +93,34 @@ export function RunPage() {
         </div>
 
         {/* Audio Progress */}
-        <div className="space-y-2 px-4">
-          <div className="h-1 bg-card rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-amber-500 transition-all duration-1000 ease-linear"
-              style={{ width: `${Math.min(100, Math.max(0, audio.progress * 100))}%` }}
-            />
-          </div>
-          <div className="flex justify-between text-xs font-medium text-slate-400">
-            <span>
-              {audio.isNudgePlaying ? (
-                <span className="text-amber-400 animate-pulse font-bold">🎯 Pace Coach Speaking...</span>
-              ) : (
-                `Segment ${audio.currentSegment + 1} of ${manifest.segments.length}`
-              )}
-            </span>
-            <span>{Math.round(audio.progress * 100)}%</span>
-          </div>
-        </div>
+        {(() => {
+          const currentProgress = audio.progress > 0 
+            ? audio.progress 
+            : (manifest && manifest.total_duration_seconds > 0 ? Math.min(1, elapsed / manifest.total_duration_seconds) : 0);
+          const currentSeg = audio.progress > 0
+            ? audio.currentSegment + 1
+            : Math.min(manifest.segments.length, Math.max(1, Math.floor(currentProgress * manifest.segments.length) + 1));
+          return (
+            <div className="space-y-2 px-4">
+              <div className="h-1.5 bg-card rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-amber-500 transition-all duration-1000 ease-linear"
+                  style={{ width: `${Math.min(100, Math.max(0, currentProgress * 100))}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs font-medium text-slate-400">
+                <span>
+                  {audio.isNudgePlaying ? (
+                    <span className="text-amber-400 animate-pulse font-bold">🎯 Pace Coach Speaking...</span>
+                  ) : (
+                    `Segment ${currentSeg} of ${manifest.segments.length}`
+                  )}
+                </span>
+                <span>{Math.round(currentProgress * 100)}%</span>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       <div className="mt-auto flex justify-center items-center h-32 gap-6">
