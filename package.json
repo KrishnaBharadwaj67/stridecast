@@ -1,0 +1,16 @@
+{
+  "name": "stridecast",
+  "version": "1.0.0",
+  "description": "Mobile-first running companion that generates your own podcast and music, fully open-source and offline-capable",
+  "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev -- --host 0.0.0.0",
+    "check": "cd backend && python scripts/check_setup.py",
+    "test": "cd backend && pytest tests",
+    "build": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+:root {
+  --color-base: #0f1419;
+  --color-surface: #1a2332;
+  --color-card: #243447;
+}
+
+body {
+  background-color: var(--color-base);
+  color: #f1f5f9;
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrolling respecting reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
